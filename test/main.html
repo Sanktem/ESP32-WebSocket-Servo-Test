@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hexapod-control</title>
+    </head>
+
+    <style>
+        body {
+            text-align: center;
+            margin-top: 20%;
+        }
+    </style>
+    <body>
+        <h1>Servo Test 1</h1>
+        <div>
+            <input type="Range" min="0" max="180" value="90" class="slider" id="servoSlider" onchange="servo(this.value)">
+        </div>
+        <p>
+            WebSocket : <span id="ws_state">null</span><br>
+            Angle : <span id="debug">90</span>
+        </p>
+      
+
+        <script>
+            function init() {
+                ws = new WebSocket("ws://" + window.location.host + ":81");
+                document.getElementById("ws_state").innerHTML = "CONNECTING";
+
+                ws.onopen  = function(){ document.getElementById("ws_state").innerHTML = "CONNECTED" };
+                ws.onclose = function(){ document.getElementById("ws_state").innerHTML = "CLOSED"};
+                ws.onerror = function(){ alert("websocket error " + this.url) };
+
+                ws.onmessage = ws_onmessage;
+            }
+
+            function ws_onmessage(e_msg) {
+                e_msg = e_msg || window.event; // MessageEvent
+
+                alert("msg : " + e_msg.data);
+            }
+
+            var slider = document.getElementById("servoSlider");
+            var servoP = document.getElementById("debug");
+            servoP.innerHTML = slider.value;
+            slider.oninput = function onSlide() {
+                slider.value = this.value;
+                servoP.value = this.value;
+            }
+
+            ws.send(onSlide + "\r\n");
+
+            window.onload.init; 
+        </script>
+    </body>
+</html>
