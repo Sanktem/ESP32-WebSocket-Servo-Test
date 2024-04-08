@@ -24,8 +24,8 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 #define SERVOMAX 600
 uint8_t servonum = 0;
 
-const char* ssid = "EscapedNigerianPrince";
-const char* password = "bbroygbvgw......";
+const char* ssid = SSID;
+const char* password = PASSWORD;
 
 AsyncWebServer server(80);
 WebSocketsServer webSocket = WebSocketsServer(81);  // WebSocket server on port 81
